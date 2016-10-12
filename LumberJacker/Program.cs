@@ -16,7 +16,7 @@ namespace LumberJacker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUI());
+            Application.Run(new GUI(new Core()));
         }
     }
 }

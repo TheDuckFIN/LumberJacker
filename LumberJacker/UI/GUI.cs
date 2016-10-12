@@ -12,14 +12,21 @@ namespace LumberJacker
 {
     public partial class GUI : Form
     {
-        public GUI()
+        private Core core;
+
+        public GUI(Core core)
         {
+            this.core = core;
             InitializeComponent();
         }
 
         private void headPositionSelector_Click(object sender, EventArgs e)
         {
+            Button pressedButton = (Button)sender;
 
+            pressedButton.Enabled = false;
+
+            this.core.BeginHeadPosSelection();
         }
     }
 }
