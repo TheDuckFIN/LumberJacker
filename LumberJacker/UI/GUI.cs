@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LumberJacker.Util;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,11 +23,36 @@ namespace LumberJacker
 
         private void headPositionSelector_Click(object sender, EventArgs e)
         {
-            Button pressedButton = (Button)sender;
+            headPositionSelectButton.Enabled = false;
 
-            pressedButton.Enabled = false;
+            this.core.BeginHeadPosSelection(updateUI);
+        }
 
-            this.core.BeginHeadPosSelection();
+        public void updateUI()
+        {
+            headPositionSelectButton.Enabled = true;
+            headPos.Text = "Head pos: " + this.core.headPosition;
+        }
+
+        private void sideButton_Click(object sender, EventArgs e)
+        {
+            if (this.core.characterSide == Side.LEFT)
+            {
+                this.core.characterSide = Side.RIGHT;
+                sideButton.Text = "Character side: Right";
+            }
+            else
+            {
+                this.core.characterSide = Side.LEFT;
+                sideButton.Text = "Character side: Left";
+            }
+        }
+
+        private void beginButton_Click(object sender, EventArgs e)
+        {
+            sideButton.Enabled = false;
+            headPositionSelectButton.Enabled = false;
+            startButton.Enabled = false;
         }
     }
 }

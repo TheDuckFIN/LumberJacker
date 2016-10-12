@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="infoText.Text" xml:space="preserve">
+    <value>Press "Select head position" and then click on the lumberjack's nose. Use the "character side" button to tell the program which side of the tree the lumberjack is on at the beginning, and then press "Begin"!</value>
+  </data>
 </root>
