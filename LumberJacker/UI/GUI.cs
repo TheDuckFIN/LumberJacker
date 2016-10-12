@@ -53,6 +53,8 @@ namespace LumberJacker
             sideButton.Enabled = false;
             headPositionSelectButton.Enabled = false;
             startButton.Enabled = false;
+
+            this.core.StartBot();
         }
     }
 }

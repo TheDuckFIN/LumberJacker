@@ -4,13 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace LumberJacker.Util
 {
-    /*
-     *
-     * Code snippet from: http://www.pinvoke.net/default.aspx/gdi32/GetPixel.html
-     *
-    */
     sealed class Win32
     {
+        /*
+         *
+         * Code snippet from: http://www.pinvoke.net/default.aspx/gdi32/GetPixel.html
+         *
+         */
+
         [DllImport("user32.dll")]
         static extern IntPtr GetDC(IntPtr hwnd);
 
