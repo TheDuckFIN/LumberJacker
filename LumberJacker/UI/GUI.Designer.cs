@@ -34,6 +34,12 @@
             this.sideButton = new System.Windows.Forms.Button();
             this.infoText = new System.Windows.Forms.Label();
             this.startButton = new System.Windows.Forms.Button();
+            this.heightSelector = new System.Windows.Forms.NumericUpDown();
+            this.treeHeightSelectorLabel = new System.Windows.Forms.Label();
+            this.speedSelectorLabel = new System.Windows.Forms.Label();
+            this.speedSelector = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.heightSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedSelector)).BeginInit();
             this.SuspendLayout();
             // 
             // headPositionSelectButton
@@ -86,11 +92,69 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.beginButton_Click);
             // 
+            // heightSelector
+            // 
+            this.heightSelector.Location = new System.Drawing.Point(16, 100);
+            this.heightSelector.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.heightSelector.Name = "heightSelector";
+            this.heightSelector.Size = new System.Drawing.Size(73, 20);
+            this.heightSelector.TabIndex = 5;
+            this.heightSelector.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.heightSelector.ValueChanged += new System.EventHandler(this.heightSelector_ValueChanged);
+            // 
+            // treeHeightSelectorLabel
+            // 
+            this.treeHeightSelectorLabel.AutoSize = true;
+            this.treeHeightSelectorLabel.Location = new System.Drawing.Point(13, 84);
+            this.treeHeightSelectorLabel.Name = "treeHeightSelectorLabel";
+            this.treeHeightSelectorLabel.Size = new System.Drawing.Size(76, 13);
+            this.treeHeightSelectorLabel.TabIndex = 6;
+            this.treeHeightSelectorLabel.Text = "Branch height:";
+            // 
+            // speedSelectorLabel
+            // 
+            this.speedSelectorLabel.AutoSize = true;
+            this.speedSelectorLabel.Location = new System.Drawing.Point(144, 84);
+            this.speedSelectorLabel.Name = "speedSelectorLabel";
+            this.speedSelectorLabel.Size = new System.Drawing.Size(41, 13);
+            this.speedSelectorLabel.TabIndex = 7;
+            this.speedSelectorLabel.Text = "Speed:";
+            // 
+            // speedSelector
+            // 
+            this.speedSelector.Location = new System.Drawing.Point(147, 99);
+            this.speedSelector.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.speedSelector.Name = "speedSelector";
+            this.speedSelector.Size = new System.Drawing.Size(72, 20);
+            this.speedSelector.TabIndex = 8;
+            this.speedSelector.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.speedSelector.ValueChanged += new System.EventHandler(this.speedSelector_ValueChanged);
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.speedSelector);
+            this.Controls.Add(this.speedSelectorLabel);
+            this.Controls.Add(this.treeHeightSelectorLabel);
+            this.Controls.Add(this.heightSelector);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.infoText);
             this.Controls.Add(this.sideButton);
@@ -98,6 +162,8 @@
             this.Controls.Add(this.headPositionSelectButton);
             this.Name = "GUI";
             this.Text = "LumberJacker";
+            ((System.ComponentModel.ISupportInitialize)(this.heightSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedSelector)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,6 +176,10 @@
         private System.Windows.Forms.Button sideButton;
         private System.Windows.Forms.Label infoText;
         private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.NumericUpDown heightSelector;
+        private System.Windows.Forms.Label treeHeightSelectorLabel;
+        private System.Windows.Forms.Label speedSelectorLabel;
+        private System.Windows.Forms.NumericUpDown speedSelector;
     }
 }
 

@@ -25,12 +25,14 @@ namespace LumberJacker
         {
             headPositionSelectButton.Enabled = false;
 
-            this.core.BeginHeadPosSelection(updateUI);
+            this.core.BeginHeadPosSelection(resetUI);
         }
 
-        public void updateUI()
+        public void resetUI()
         {
             headPositionSelectButton.Enabled = true;
+            sideButton.Enabled = true;
+            startButton.Enabled = true;
             headPos.Text = "Head pos: " + this.core.headPosition;
         }
 
@@ -55,6 +57,16 @@ namespace LumberJacker
             startButton.Enabled = false;
 
             this.core.StartBot();
+        }
+
+        private void heightSelector_ValueChanged(object sender, EventArgs e)
+        {
+            this.core.branchHeight = (int)((NumericUpDown)sender).Value;
+        }
+
+        private void speedSelector_ValueChanged(object sender, EventArgs e)
+        {
+            this.core.waitTime = (int)((NumericUpDown)sender).Value;
         }
     }
 }

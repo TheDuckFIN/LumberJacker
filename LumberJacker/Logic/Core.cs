@@ -3,6 +3,7 @@ using LumberJacker.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace LumberJacker
         public Side characterSide;
         public int branchHeight = 30;
         public int sideDifference = 120;
-        public int waitTime = 200;
+        public int waitTime = 1000;
 
         public Action updateUI;
 
@@ -42,11 +43,13 @@ namespace LumberJacker
                 
                 Side currentSide = characterSide;
                 int diff = 0;
+                bool started = false;
 
                 while(true)
                 {
                     if (botEnabled)
                     {
+                        started = true;
                         if (characterSide == Side.LEFT && currentSide == Side.RIGHT)
                         {
                             diff = sideDifference;
@@ -60,11 +63,14 @@ namespace LumberJacker
                             diff = 0;
                         }
 
-                        Color pixelColor = Win32.GetPixelColor(this.headPosition.x + diff, this.headPosition.y - branchHeight);
-                        
-                        System.Diagnostics.Debug.WriteLine("Color: " + pixelColor);
+                        bool isThereBranch = analyzeBranchExistance(this.headPosition.x + diff, this.headPosition.y - 15, branchHeight);
 
-                        if (pixelColor.G < 180 && pixelColor.B < 180)
+                        //Color pixelColor = Win32.GetPixelColor(this.headPosition.x + diff, this.headPosition.y - branchHeight);
+
+                        //System.Diagnostics.Debug.WriteLine("Color: " + pixelColor);
+
+                        //if (pixelColor.G < 180 && pixelColor.B < 180)
+                        if (isThereBranch)
                         {
                             if (currentSide == Side.LEFT)
                             {
@@ -91,9 +97,32 @@ namespace LumberJacker
 
                         Thread.Sleep(this.waitTime);
                     }
+                    else
+                    {
+                        if (started)
+                        {
+                            Thread.CurrentThread.Abort();
+                        }
+                    }
                 }
 
             }).Start();
+
+        }
+
+        private bool analyzeBranchExistance(int x, int y, int range)
+        {
+            Rectangle rect = new Rectangle(0, 0, 1, range);
+            Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(bmp);
+            g.CopyFromScreen(x, y - range, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+            
+            for (int i = 0; i < range; i++)
+            {
+                if (bmp.GetPixel(0, i).B < 160) return true;
+            }
+
+            return false;
         }
 
         public void BeginHeadPosSelection(Action updateUI)
@@ -114,7 +143,7 @@ namespace LumberJacker
             this.headPosition.x = e.Location.X;
             this.headPosition.y = e.Location.Y;
 
-            System.Diagnostics.Debug.Write("Mouse pos: " + this.headPosition + ", color: " + Win32.GetPixelColor(this.headPosition.x, this.headPosition.y));
+            //System.Diagnostics.Debug.Write("Is there a branch? " + analyzeBranchExistance(this.headPosition.x, this.headPosition.y));
 
             this.updateUI();
 
@@ -127,6 +156,7 @@ namespace LumberJacker
             if (e.KeyChar == 's' || e.KeyChar == 'S')
             {
                 botEnabled = !botEnabled;
+                if (!botEnabled) updateUI();
             }
         }
     }
