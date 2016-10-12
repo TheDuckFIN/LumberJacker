@@ -1,9 +1,0 @@
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\bin\Debug\LumberJacker.exe.config
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\bin\Debug\LumberJacker.exe
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\bin\Debug\LumberJacker.pdb
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.csprojResolveAssemblyReference.cache
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.Properties.Resources.resources
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.csproj.GenerateResource.Cache
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.exe
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.pdb
-C:\Users\valtt\Documents\GitHub\LumberJacker\LumberJacker\LumberJacker\obj\Debug\LumberJacker.GUI.resources
