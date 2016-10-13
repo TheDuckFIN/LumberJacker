@@ -18,55 +18,68 @@ namespace LumberJacker
         public GUI(Core core)
         {
             this.core = core;
+            this.core.SetActions(DisableInput, EnableInput, UpdateTexts);
+
             InitializeComponent();
+        }
+
+        public void DisableInput()
+        {
+            headPositionSelectButton.Enabled = false;
+            sideButton.Enabled = false;
+            startButton.Enabled = false;
+            speedSelector.Enabled = false;
+            scanRadiusSelector.Enabled = false;
+        }
+
+        public void EnableInput()
+        {
+            headPositionSelectButton.Enabled = true;
+            sideButton.Enabled = true;
+            startButton.Enabled = true;
+            speedSelector.Enabled = true;
+            scanRadiusSelector.Enabled = true;
+        }
+
+        public void UpdateTexts()
+        {
+            headPos.Text = "Head pos: " + this.core.bot.headPosition;
         }
 
         private void headPositionSelector_Click(object sender, EventArgs e)
         {
             headPositionSelectButton.Enabled = false;
 
-            this.core.BeginHeadPosSelection(resetUI);
+            this.core.BeginHeadPosSelection();
         }
-
-        public void resetUI()
-        {
-            headPositionSelectButton.Enabled = true;
-            sideButton.Enabled = true;
-            startButton.Enabled = true;
-            headPos.Text = "Head pos: " + this.core.headPosition;
-        }
-
+        
         private void sideButton_Click(object sender, EventArgs e)
         {
-            if (this.core.characterSide == Side.LEFT)
+            if (this.core.bot.characterStartingSide == Side.LEFT)
             {
-                this.core.characterSide = Side.RIGHT;
+                this.core.bot.characterStartingSide = Side.RIGHT;
                 sideButton.Text = "Character side: Right";
             }
             else
             {
-                this.core.characterSide = Side.LEFT;
+                this.core.bot.characterStartingSide = Side.LEFT;
                 sideButton.Text = "Character side: Left";
             }
         }
 
-        private void beginButton_Click(object sender, EventArgs e)
+        private void startButton_Click(object sender, EventArgs e)
         {
-            sideButton.Enabled = false;
-            headPositionSelectButton.Enabled = false;
-            startButton.Enabled = false;
-
             this.core.StartBot();
         }
-
-        private void heightSelector_ValueChanged(object sender, EventArgs e)
-        {
-            this.core.branchHeight = (int)((NumericUpDown)sender).Value;
-        }
-
+        
         private void speedSelector_ValueChanged(object sender, EventArgs e)
         {
-            this.core.waitTime = (int)((NumericUpDown)sender).Value;
+            this.core.bot.waitTime = (int)((NumericUpDown)sender).Value;
+        }
+
+        private void scanRadiusSelector_ValueChanged(object sender, EventArgs e)
+        {
+            this.core.bot.scanRadius = (int)((NumericUpDown)sender).Value;
         }
     }
 }

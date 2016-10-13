@@ -1,4 +1,5 @@
 ﻿using Gma.System.MouseKeyHook;
+using LumberJacker.Logic;
 using LumberJacker.Util;
 using System;
 using System.Collections.Generic;
@@ -15,148 +16,109 @@ namespace LumberJacker
     public class Core
     {
         private IKeyboardMouseEvents globalHook;
-        private bool botEnabled = false;
+        
+        //References to UI methods
+        public Action disableUI;
+        public Action enableUI;
+        public Action updateTexts;
 
-        public Vector2 headPosition;
-        public Side characterSide;
-        public int branchHeight = 30;
-        public int sideDifference = 120;
-        public int waitTime = 1000;
+        //Bot class
+        public Bot bot;
 
-        public Action updateUI;
-
-
+        //Booleans to keep track if the bot is ready to be started or currently running
+        private bool botShouldStart;
+        private bool botRunning;
+        
         public Core()
         {
+            //Set globalHook to reference Hook class's method GlobalEvents
             this.globalHook = Hook.GlobalEvents();
-            this.headPosition = new Vector2(0, 0);
-            this.characterSide = Side.LEFT;
+
+            //Create the bot object
+            this.bot = new Bot();
+
+            //Start listening to keypresses in method GlobalHook_KeyPress
+            this.globalHook.KeyPress += GlobalHook_KeyPress;
+
+            //Bot should not start before the user presses start button
+            this.botShouldStart = false;
         }
         
         public void StartBot()
         {
-            this.globalHook.KeyPress += GlobalHook_KeyPress;
+            //Disable input in UI
+            this.disableUI();
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                
-                Side currentSide = characterSide;
-                int diff = 0;
-                bool started = false;
-
-                while(true)
-                {
-                    if (botEnabled)
-                    {
-                        started = true;
-                        if (characterSide == Side.LEFT && currentSide == Side.RIGHT)
-                        {
-                            diff = sideDifference;
-                        }
-                        else if (characterSide == Side.RIGHT && currentSide == Side.LEFT)
-                        {
-                            diff = -sideDifference;
-                        }
-                        else
-                        {
-                            diff = 0;
-                        }
-
-                        bool isThereBranch = analyzeBranchExistance(this.headPosition.x + diff, this.headPosition.y - 15, branchHeight);
-
-                        //Color pixelColor = Win32.GetPixelColor(this.headPosition.x + diff, this.headPosition.y - branchHeight);
-
-                        //System.Diagnostics.Debug.WriteLine("Color: " + pixelColor);
-
-                        //if (pixelColor.G < 180 && pixelColor.B < 180)
-                        if (isThereBranch)
-                        {
-                            if (currentSide == Side.LEFT)
-                            {
-                                SendKeys.SendWait("{RIGHT}");
-                                currentSide = Side.RIGHT;
-                            }
-                            else
-                            {
-                                SendKeys.SendWait("{LEFT}");
-                                currentSide = Side.LEFT;
-                            }
-                        }
-                        else
-                        {
-                            if (currentSide == Side.LEFT)
-                            {
-                                SendKeys.SendWait("{LEFT}");
-                            }
-                            else
-                            {
-                                SendKeys.SendWait("{RIGHT}");
-                            }
-                        }
-
-                        Thread.Sleep(this.waitTime);
-                    }
-                    else
-                    {
-                        if (started)
-                        {
-                            Thread.CurrentThread.Abort();
-                        }
-                    }
-                }
-
-            }).Start();
-
+            //Set the bot to be ready to start
+            this.botShouldStart = true;
         }
 
-        private bool analyzeBranchExistance(int x, int y, int range)
+        public void SetActions(Action disableUI, Action enableUI, Action updateTexts)
         {
-            Rectangle rect = new Rectangle(0, 0, 1, range);
-            Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(x, y - range, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
-            
-            for (int i = 0; i < range; i++)
-            {
-                if (bmp.GetPixel(0, i).B < 160) return true;
-            }
-
-            return false;
-        }
-
-        public void BeginHeadPosSelection(Action updateUI)
-        {
-            this.updateUI = updateUI;
-            this.globalHook.MouseClick += GlobalHook_MouseClick;
+            this.disableUI = disableUI;
+            this.enableUI = enableUI;
+            this.updateTexts = updateTexts;
         }
 
         /*
          *
-         * Hook listeners!
+         * Head position selection
          *
          */
 
+        public void BeginHeadPosSelection()
+        {
+            this.globalHook.MouseClick += GlobalHook_MouseClick;
+        }
+        
         private void GlobalHook_MouseClick(object sender, MouseEventArgs e)
         {
             //Set head position as the click position
-            this.headPosition.x = e.Location.X;
-            this.headPosition.y = e.Location.Y;
+            this.bot.headPosition.x = e.Location.X;
+            this.bot.headPosition.y = e.Location.Y;
 
-            //System.Diagnostics.Debug.Write("Is there a branch? " + analyzeBranchExistance(this.headPosition.x, this.headPosition.y));
-
-            this.updateUI();
+            //Enable all UI buttons and update UI text
+            this.enableUI();
+            this.updateTexts();
 
             //Disable hook - for now
             this.globalHook.MouseClick -= GlobalHook_MouseClick;
         }
 
+        /*
+         *
+         * Key listener
+         *
+         */
         private void GlobalHook_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 's' || e.KeyChar == 'S')
             {
-                botEnabled = !botEnabled;
-                if (!botEnabled) updateUI();
+                if (botShouldStart)
+                {
+                    //Start the bot in a new background thread
+                    new Thread(() =>
+                    {
+                        Thread.CurrentThread.IsBackground = true;
+                        this.bot.Run();
+
+                    }).Start();
+
+                    //The bot should not start anymore
+                    this.botShouldStart = false;
+                    this.botRunning = true;
+                }
+                else if (!botShouldStart && botRunning)
+                {
+                    //Tell the bot to stop
+                    this.bot.Stop();
+
+                    //It's not running anymore (soon)
+                    this.botRunning = false;
+
+                    //Enable UI
+                    this.enableUI();
+                }
             }
         }
     }

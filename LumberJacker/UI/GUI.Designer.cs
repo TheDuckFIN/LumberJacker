@@ -34,11 +34,11 @@
             this.sideButton = new System.Windows.Forms.Button();
             this.infoText = new System.Windows.Forms.Label();
             this.startButton = new System.Windows.Forms.Button();
-            this.heightSelector = new System.Windows.Forms.NumericUpDown();
-            this.treeHeightSelectorLabel = new System.Windows.Forms.Label();
+            this.scanRadiusSelector = new System.Windows.Forms.NumericUpDown();
+            this.scanRadiusSelectorLabel = new System.Windows.Forms.Label();
             this.speedSelectorLabel = new System.Windows.Forms.Label();
             this.speedSelector = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.heightSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scanRadiusSelector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedSelector)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +82,7 @@
             // startButton
             // 
             this.startButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.startButton.Enabled = false;
             this.startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startButton.ForeColor = System.Drawing.Color.ForestGreen;
             this.startButton.Location = new System.Drawing.Point(0, 217);
@@ -90,34 +91,34 @@
             this.startButton.TabIndex = 4;
             this.startButton.Text = "Start!";
             this.startButton.UseVisualStyleBackColor = true;
-            this.startButton.Click += new System.EventHandler(this.beginButton_Click);
+            this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
-            // heightSelector
+            // scanRadiusSelector
             // 
-            this.heightSelector.Location = new System.Drawing.Point(16, 100);
-            this.heightSelector.Maximum = new decimal(new int[] {
+            this.scanRadiusSelector.Location = new System.Drawing.Point(16, 100);
+            this.scanRadiusSelector.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.heightSelector.Name = "heightSelector";
-            this.heightSelector.Size = new System.Drawing.Size(73, 20);
-            this.heightSelector.TabIndex = 5;
-            this.heightSelector.Value = new decimal(new int[] {
+            this.scanRadiusSelector.Name = "scanRadiusSelector";
+            this.scanRadiusSelector.Size = new System.Drawing.Size(73, 20);
+            this.scanRadiusSelector.TabIndex = 5;
+            this.scanRadiusSelector.Value = new decimal(new int[] {
             30,
             0,
             0,
             0});
-            this.heightSelector.ValueChanged += new System.EventHandler(this.heightSelector_ValueChanged);
+            this.scanRadiusSelector.ValueChanged += new System.EventHandler(this.scanRadiusSelector_ValueChanged);
             // 
-            // treeHeightSelectorLabel
+            // scanRadiusSelectorLabel
             // 
-            this.treeHeightSelectorLabel.AutoSize = true;
-            this.treeHeightSelectorLabel.Location = new System.Drawing.Point(13, 84);
-            this.treeHeightSelectorLabel.Name = "treeHeightSelectorLabel";
-            this.treeHeightSelectorLabel.Size = new System.Drawing.Size(76, 13);
-            this.treeHeightSelectorLabel.TabIndex = 6;
-            this.treeHeightSelectorLabel.Text = "Branch height:";
+            this.scanRadiusSelectorLabel.AutoSize = true;
+            this.scanRadiusSelectorLabel.Location = new System.Drawing.Point(13, 84);
+            this.scanRadiusSelectorLabel.Name = "scanRadiusSelectorLabel";
+            this.scanRadiusSelectorLabel.Size = new System.Drawing.Size(66, 13);
+            this.scanRadiusSelectorLabel.TabIndex = 6;
+            this.scanRadiusSelectorLabel.Text = "Scan radius:";
             // 
             // speedSelectorLabel
             // 
@@ -153,8 +154,8 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.speedSelector);
             this.Controls.Add(this.speedSelectorLabel);
-            this.Controls.Add(this.treeHeightSelectorLabel);
-            this.Controls.Add(this.heightSelector);
+            this.Controls.Add(this.scanRadiusSelectorLabel);
+            this.Controls.Add(this.scanRadiusSelector);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.infoText);
             this.Controls.Add(this.sideButton);
@@ -162,7 +163,7 @@
             this.Controls.Add(this.headPositionSelectButton);
             this.Name = "GUI";
             this.Text = "LumberJacker";
-            ((System.ComponentModel.ISupportInitialize)(this.heightSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scanRadiusSelector)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedSelector)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -176,8 +177,8 @@
         private System.Windows.Forms.Button sideButton;
         private System.Windows.Forms.Label infoText;
         private System.Windows.Forms.Button startButton;
-        private System.Windows.Forms.NumericUpDown heightSelector;
-        private System.Windows.Forms.Label treeHeightSelectorLabel;
+        private System.Windows.Forms.NumericUpDown scanRadiusSelector;
+        private System.Windows.Forms.Label scanRadiusSelectorLabel;
         private System.Windows.Forms.Label speedSelectorLabel;
         private System.Windows.Forms.NumericUpDown speedSelector;
     }

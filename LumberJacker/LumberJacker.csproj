@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\Bot.cs" />
     <Compile Include="Logic\Core.cs" />
     <Compile Include="UI\GUI.cs">
       <SubType>Form</SubType>
