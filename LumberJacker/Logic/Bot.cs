@@ -43,10 +43,8 @@ namespace LumberJacker.Logic
             //Main loop
             while (!this.shouldExit)
             {
-                
-                int diff = XDifference(currentSide);
-
-                bool isThereBranch = analyzeBranchExistance(this.headPosition.x + diff, this.headPosition.y - 15, this.scanRadius);
+             
+                bool isThereBranch = analyzeBranchExistance(currentSide);
 
                 if (isThereBranch)
                 {
@@ -104,18 +102,44 @@ namespace LumberJacker.Logic
             }
         }
         
-        private bool analyzeBranchExistance(int x, int y, int range)
+        private bool analyzeBranchExistance(Side currentSide)
         {
-            Rectangle rect = new Rectangle(0, 0, 1, range);
-            Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(x, y - range, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+            int xDiff = XDifference(currentSide);
 
-            for (int i = 0; i < range; i++)
+            //Calculate positions
+            int xStart = this.headPosition.x + xDiff;
+            int yStart = this.headPosition.y - 20; //~20 pixels from nose to sky even if you're a bit inaccurate
+            int xEnd = xStart + 1;
+            int yEnd = yStart - this.scanRadius;
+            
+            System.Diagnostics.Debug.WriteLine("Scanning from (" + xStart + ", " + yStart + ") to (" + xEnd + ", " + yEnd + ")");
+
+            return scanForBranch(xStart, yStart, xEnd, yEnd);
+        }
+
+        private bool scanForBranch(int xStart, int yStart, int xEnd, int yEnd)
+        {
+            //Calculate scan area size
+            int xSize = Math.Abs(xStart - xEnd);
+            int ySize = Math.Abs(yStart - yEnd);
+            
+            //Create bitmap and graphics element
+            Bitmap bmp = new Bitmap(xSize, ySize, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(bmp);
+
+            //Copy pixels from screen to the bitmap
+            g.CopyFromScreen(Math.Min(xStart, xEnd), Math.Min(yStart, yEnd), 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+
+            //Scan the area for too dark pixels
+            for (int x = 0; x < xSize; x++)
             {
-                if (bmp.GetPixel(0, i).B < 160) return true;
+                for (int y = 0; y < ySize; y++)
+                {
+                    if (bmp.GetPixel(x, y).B < 160) return true;
+                }
             }
 
+            //If didn't find any
             return false;
         }
 
